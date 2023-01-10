@@ -5,7 +5,19 @@
 	"tabWidth": 4,
 	"useTabs": true,
 	"bracketSpacing": true,
-	"bracketSameLine":true,
+	"bracketSameLine": true,
 	"arrowParens": "always",
-	"trailingComma": "es5"
+	"trailingComma": "es5",
+	"plugins": ["@trivago/prettier-plugin-sort-imports"],
+	"importOrder": [
+		"^svelte",
+		"^@",
+		"^\\$",
+		"<THIRD_PARTY_MODULES>",
+		"^[./]",
+		"<TYPE_IMPORTS>"
+	],
+	"importOrderSeparation": true,
+	"importOrderSortSpecifiers": true,
+	"importOrderCaseInsensitive": true
 }

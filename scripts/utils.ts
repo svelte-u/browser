@@ -1,8 +1,7 @@
-import fs from "fs-extra"
 import fg from "fast-glob"
-import path from "path"
-
+import fs from "fs-extra"
 import { readdir } from "fs/promises"
+import path from "path"
 import { fileURLToPath as file_url_to_path } from "url"
 
 const current_path = path.dirname(file_url_to_path(import.meta.url))
@@ -10,10 +9,16 @@ const current_path = path.dirname(file_url_to_path(import.meta.url))
 export const DIR_ROOT = path.resolve(current_path, "../")
 export const DIR_SRC = path.resolve(DIR_ROOT, "src")
 
+interface ListFunctions {
+	name: string
+	path: string
+	module: string
+}
+
 /**
  *
- * @param {Record<string, any>[]} list the list of items to group.
- * @param {(item: Record<string, any>) => any} fn the function to group by.
+ * @param list - the list of items to group.
+ * @param fn - the function to group by.
  * @returns the grouped item.
  */
 export function group(
@@ -27,17 +32,11 @@ export function group(
 	}, {}) satisfies Record<string, any>
 }
 
-interface ListFunctions {
-	name: string
-	path: string
-	module: string
-}
-
 /**
  *
- * @param {string} dir The directory to search.
- * @param {string[]} files The files to search.
- * @returns {Submodule} The submodules.
+ * @param dir - The directory to search.
+ * @param files - The files to search.
+ * @returns The submodules.
  */
 async function get_submodules(dir: string, files: string[]) {
 	const submodules = []
@@ -62,9 +61,9 @@ async function get_submodules(dir: string, files: string[]) {
 
 /**
  *
- * @param {string} dir path to directory.
- * @param {string[]} ignore list of directories to ignore.
- * @returns {Promise<Record<string, string[]>>} list of functions.
+ * @param dir - path to directory.
+ * @param ignore - list of directories to ignore.
+ * @returns List of functions.
  */
 export async function list_functions(dir: string, ignore: string[] = []) {
 	let files = await fg("*", {

@@ -1,7 +1,7 @@
 import fs from "fs-extra"
 import path from "path"
 
-import { DIR_SRC, DIR_ROOT, list_functions, update_package_json } from "./utils"
+import { DIR_ROOT, DIR_SRC, list_functions, update_package_json } from "./utils"
 
 async function run() {
 	const functions = await list_functions(DIR_SRC)
