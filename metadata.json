@@ -1,8 +1,10 @@
 {
-    "total": 1,
+    "total": 3,
     "packages": {
         "index": [
-            "support"
+            "memory",
+            "support",
+            "utils"
         ]
     }
 }
