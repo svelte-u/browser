@@ -4,5 +4,6 @@ export default defineConfig({
 	test: {
 		globals: true,
 		reporters: "dot",
+		environment: "jsdom",
 	},
 })
