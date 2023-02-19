@@ -23,3 +23,11 @@ export interface MemoryOptions extends IntervalFnOptions {
 export type PerformanceMemory = Performance & {
 	memory: MemoryInfo
 }
+
+export interface FaviconOptions {
+	/** The base url to prepend to the favicon. */
+	base_url?: string
+
+	/** The rel attribute of the favicon. */
+	rel?: string
+}

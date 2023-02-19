@@ -1,7 +1,8 @@
 {
-    "total": 3,
+    "total": 4,
     "packages": {
         "index": [
+            "favicon",
             "memory",
             "support",
             "utils"
