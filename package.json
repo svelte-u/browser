@@ -37,6 +37,8 @@
         }
     },
     "devDependencies": {
+        "@sveltejs/vite-plugin-svelte": "^2.0.2",
+        "@testing-library/svelte": "^3.2.2",
         "@trivago/prettier-plugin-sort-imports": "^4.0.0",
         "@types/fs-extra": "^11.0.1",
         "@types/node": "^18.13.0",

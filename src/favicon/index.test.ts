@@ -11,7 +11,7 @@ describe("favicon", () => {
 
 	it("should work", () => {
 		const icon = favicon()
-		console.log(document?.head)
+
 		expect(unstore(icon)).toBeUndefined()
 
 		icon.set("favicon.ico")

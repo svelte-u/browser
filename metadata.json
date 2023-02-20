@@ -1,7 +1,8 @@
 {
-    "total": 4,
+    "total": 5,
     "packages": {
         "index": [
+            "event_listener",
             "favicon",
             "memory",
             "support",

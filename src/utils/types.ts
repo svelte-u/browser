@@ -1,4 +1,4 @@
-import type { IntervalFnOptions } from "@sveu/shared"
+import type { AnyFn, IntervalFnOptions } from "@sveu/shared"
 
 export interface MemoryInfo {
 	/**
@@ -31,3 +31,15 @@ export interface FaviconOptions {
 	/** The rel attribute of the favicon. */
 	rel?: string
 }
+
+export interface InferEventTarget<Events> {
+	addEventListener(event: Events, fn?: AnyFn, options?: any): any
+
+	removeEventListener(event: Events, fn?: AnyFn, options?: any): any
+}
+
+export interface GeneralEventListener<E = Event> {
+	(evt: E): void
+}
+
+export type ListAble<T> = T[] | T
