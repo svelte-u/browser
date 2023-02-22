@@ -1,5 +1,5 @@
 {
-    "total": 10,
+    "total": 11,
     "packages": {
         "index": [
             "active_el",
@@ -9,6 +9,7 @@
             "media_query",
             "memory",
             "permission",
+            "preferred_lang",
             "push_notification",
             "support",
             "utils"
