@@ -1,8 +1,9 @@
 {
-    "total": 6,
+    "total": 7,
     "packages": {
         "index": [
             "active_el",
+            "broadcast_channel",
             "event_listener",
             "favicon",
             "memory",

@@ -43,3 +43,11 @@ export interface GeneralEventListener<E = Event> {
 }
 
 export type ListAble<T> = T[] | T
+
+export interface BroadcastChannelOptions {
+	/**
+	 * The name of the channel.
+	 * @defaultValue "default"
+	 */
+	name?: string
+}
