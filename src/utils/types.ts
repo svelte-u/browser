@@ -1,3 +1,5 @@
+import type { Readable } from "svelte/store"
+
 import type { AnyFn, IntervalFnOptions } from "@sveu/shared"
 
 export interface MemoryInfo {
@@ -66,4 +68,47 @@ export interface PushOptions {
 	 * @defaultValue true
 	 */
 	user_visible_only?: boolean
+}
+
+type DescriptorNamePolyfill =
+	| "accelerometer"
+	| "accessibility-events"
+	| "ambient-light-sensor"
+	| "background-sync"
+	| "camera"
+	| "clipboard-read"
+	| "clipboard-write"
+	| "gyroscope"
+	| "magnetometer"
+	| "microphone"
+	| "notifications"
+	| "payment-handler"
+	| "persistent-storage"
+	| "push"
+	| "speaker"
+
+export type GeneralPermissionDescriptor =
+	| PermissionDescriptor
+	| { name: DescriptorNamePolyfill }
+
+export interface PermissionOptions<Controls extends boolean> {
+	/**
+	 * Expose more controls
+	 *
+	 * @defaultValue false
+	 */
+	controls?: Controls
+}
+
+export type PermissionReturn = Readable<PermissionState | undefined>
+
+export interface PermissionReturnWithControls {
+	/** The permission state. */
+	state: PermissionReturn
+
+	/** Whether the permission is supported. */
+	supported: Readable<boolean>
+
+	/** Query the permission state. */
+	query: () => Promise<PermissionStatus | undefined>
 }
