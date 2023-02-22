@@ -1,5 +1,5 @@
 {
-    "total": 7,
+    "total": 8,
     "packages": {
         "index": [
             "active_el",
@@ -7,6 +7,7 @@
             "event_listener",
             "favicon",
             "memory",
+            "push_notification",
             "support",
             "utils"
         ]

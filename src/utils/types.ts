@@ -51,3 +51,19 @@ export interface BroadcastChannelOptions {
 	 */
 	name?: string
 }
+
+export interface PushOptions {
+	/**
+	 * Convert the push object into a base64 string
+	 *
+	 * @defaultValue true
+	 */
+	base64?: boolean
+
+	/**
+	 * Start subscribing, when the user is visible
+	 *
+	 * @defaultValue true
+	 */
+	user_visible_only?: boolean
+}
