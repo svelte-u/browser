@@ -112,3 +112,47 @@ export interface PermissionReturnWithControls {
 	/** Query the permission state. */
 	query: () => Promise<PermissionStatus | undefined>
 }
+
+export interface ClipboardOptions<Source> {
+	/**
+	 * Enabled reading for clipboard
+	 *
+	 * @defaultValue false
+	 */
+	read?: boolean
+
+	/**
+	 * Copy source
+	 */
+	source?: Source
+
+	/**
+	 * Seconds to reset state of `copied` ref
+	 *
+	 * @defaultValue 1.5
+	 */
+	copied_during?: number
+
+	/**
+	 * Whether fallback to document.execCommand('copy') if clipboard is undefined.
+	 *
+	 * @defaultValue false
+	 */
+	legacy?: boolean
+}
+
+export interface ClipboardReturn<Optional> {
+	/** Returns whether the clipboard is supported. */
+	supported: Readable<boolean>
+
+	/** The text in the clipboard. */
+	text: Readable<string>
+
+	/** Whether the text is copied. */
+	copied: Readable<boolean>
+
+	/** A function to copy the text to the clipboard. */
+	copy: Optional extends true
+		? (text?: string) => Promise<void>
+		: (text: string) => Promise<void>
+}

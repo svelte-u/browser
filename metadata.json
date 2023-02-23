@@ -1,9 +1,10 @@
 {
-    "total": 11,
+    "total": 12,
     "packages": {
         "index": [
             "active_el",
             "broadcast_channel",
+            "clipboard",
             "event_listener",
             "favicon",
             "media_query",
