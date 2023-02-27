@@ -200,3 +200,11 @@ export interface RafFnOptions {
 	 */
 	immediate?: boolean
 }
+
+export interface FpsOptions {
+	/**
+	 * Calculate the FPS on every x frames.
+	 * @defaultValue 10
+	 */
+	every?: number
+}

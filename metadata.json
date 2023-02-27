@@ -1,5 +1,5 @@
 {
-    "total": 18,
+    "total": 19,
     "packages": {
         "index": [
             "active_el",
@@ -9,6 +9,7 @@
             "event_listener",
             "favicon",
             "file_dialog",
+            "fps",
             "media_query",
             "memory",
             "network",
