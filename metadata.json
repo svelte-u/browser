@@ -1,5 +1,5 @@
 {
-    "total": 21,
+    "total": 22,
     "packages": {
         "index": [
             "active_el",
@@ -12,6 +12,7 @@
             "favicon",
             "file_dialog",
             "fps",
+            "geolocation",
             "media_query",
             "memory",
             "network",

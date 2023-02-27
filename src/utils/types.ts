@@ -236,3 +236,30 @@ export interface EyeDropperOptions {
 	 */
 	initial?: string
 }
+
+export interface GeolocationOptions {
+	/** Whether to enable high accuracy.
+	 *
+	 * @defaultValue true
+	 */
+	high?: boolean
+
+	/** The maximum age of a cached position in seconds.
+	 *
+	 * @defaultValue 3
+	 */
+	max_age?: number
+
+	/** The timeout in seconds.
+	 *
+	 * @defaultValue 27
+	 */
+	timeout?: number
+
+	/**
+	 * To start the geolocation immediately
+	 *
+	 * @defaultValue true
+	 */
+	immediate?: boolean
+}
