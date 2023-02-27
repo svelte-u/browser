@@ -263,3 +263,12 @@ export interface GeolocationOptions {
 	 */
 	immediate?: boolean
 }
+
+export interface ImageOptions {
+	/** Address of the resource */
+	src: string
+	/** Images to use in different situations, e.g., high-resolution displays, small monitors, etc. */
+	srcset?: string
+	/** Image sizes for different page layouts */
+	sizes?: string
+}
