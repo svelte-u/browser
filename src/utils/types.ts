@@ -272,3 +272,24 @@ export interface ImageOptions {
 	/** Image sizes for different page layouts */
 	sizes?: string
 }
+
+export interface IntersectionObserverOptions {
+	/**
+	 * The Element or Document whose bounds are used as the bounding box when testing for intersection.
+	 */
+	root?: HTMLElement | SVGElement | undefined | null
+
+	/**
+	 * A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections.
+	 *
+	 * @defaultValue "0px"
+	 */
+	margin?: string
+
+	/**
+	 * Either a single number or an array of numbers between 0.0 and 1.
+	 *
+	 * @defaultValue 0.1
+	 */
+	threshold?: number | number[]
+}

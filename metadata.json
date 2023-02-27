@@ -1,5 +1,5 @@
 {
-    "total": 23,
+    "total": 24,
     "packages": {
         "index": [
             "active_el",
@@ -14,6 +14,7 @@
             "fps",
             "geolocation",
             "image",
+            "intersection_observer",
             "media_query",
             "memory",
             "network",
