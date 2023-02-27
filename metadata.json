@@ -1,8 +1,9 @@
 {
-    "total": 19,
+    "total": 20,
     "packages": {
         "index": [
             "active_el",
+            "breakpoints",
             "broadcast_channel",
             "clipboard",
             "dom_visible",

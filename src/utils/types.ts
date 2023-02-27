@@ -208,3 +208,6 @@ export interface FpsOptions {
 	 */
 	every?: number
 }
+
+
+export type Breakpoints<K extends string = string> = Record<K, number | string>

@@ -1,4 +1,5 @@
 export * from "./active_el"
+export * from "./breakpoints"
 export * from "./broadcast_channel"
 export * from "./clipboard"
 export * from "./dom_visible"
