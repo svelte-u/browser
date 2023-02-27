@@ -1,5 +1,5 @@
 {
-    "total": 14,
+    "total": 15,
     "packages": {
         "index": [
             "active_el",
@@ -15,6 +15,7 @@
             "push_notification",
             "resize_observer",
             "support",
+            "useragent",
             "utils"
         ]
     }
