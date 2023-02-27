@@ -1,5 +1,5 @@
 {
-    "total": 13,
+    "total": 14,
     "packages": {
         "index": [
             "active_el",
@@ -13,6 +13,7 @@
             "permission",
             "preferred_lang",
             "push_notification",
+            "resize_observer",
             "support",
             "utils"
         ]
