@@ -156,3 +156,26 @@ export interface ClipboardReturn<Optional> {
 		? (text?: string) => Promise<void>
 		: (text: string) => Promise<void>
 }
+
+export interface FileDialogOptions {
+	/**
+	 * Allowed multiple files selection.
+	 *
+	 * @defaultValue true
+	 */
+	multiple?: boolean
+
+	/**
+	 * Allowed file types.
+	 *
+	 * @defaultValue '*'
+	 */
+	accept?: string
+
+	/**
+	 * Select the input source for the capture file.
+	 *
+	 * @see [HTMLInputElement Capture](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/capture)
+	 */
+	capture?: string
+}

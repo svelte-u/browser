@@ -1,5 +1,5 @@
 {
-    "total": 15,
+    "total": 16,
     "packages": {
         "index": [
             "active_el",
@@ -8,6 +8,7 @@
             "dom_visible",
             "event_listener",
             "favicon",
+            "file_dialog",
             "media_query",
             "memory",
             "permission",
