@@ -179,3 +179,15 @@ export interface FileDialogOptions {
 	 */
 	capture?: string
 }
+
+export type NetworkType =
+	| "bluetooth"
+	| "cellular"
+	| "ethernet"
+	| "none"
+	| "wifi"
+	| "wimax"
+	| "other"
+	| "unknown"
+
+export type NetworkEffectiveType = "slow-2g" | "2g" | "3g" | "4g" | undefined

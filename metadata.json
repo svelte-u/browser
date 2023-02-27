@@ -1,5 +1,5 @@
 {
-    "total": 16,
+    "total": 17,
     "packages": {
         "index": [
             "active_el",
@@ -11,6 +11,7 @@
             "file_dialog",
             "media_query",
             "memory",
+            "network",
             "permission",
             "preferred_lang",
             "push_notification",
