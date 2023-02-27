@@ -209,5 +209,30 @@ export interface FpsOptions {
 	every?: number
 }
 
-
 export type Breakpoints<K extends string = string> = Record<K, number | string>
+
+export interface EyeDropperOpenOptions {
+	/**
+	 * The signal to abort the eye dropper.
+	 *
+	 * @see https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal
+	 */
+	signal?: AbortSignal
+}
+
+export interface EyeDropper {
+	// eslint-disable-next-line @typescript-eslint/no-misused-new
+	new (): EyeDropper
+
+	open: (options?: EyeDropperOpenOptions) => Promise<{ sRGBHex: string }>
+	[Symbol.toStringTag]: "EyeDropper"
+}
+
+export interface EyeDropperOptions {
+	/**
+	 * Initial sRGBHex.
+	 *
+	 * @defaultValue ''
+	 */
+	initial?: string
+}

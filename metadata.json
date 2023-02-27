@@ -1,5 +1,5 @@
 {
-    "total": 20,
+    "total": 21,
     "packages": {
         "index": [
             "active_el",
@@ -8,6 +8,7 @@
             "clipboard",
             "dom_visible",
             "event_listener",
+            "eye_dropper",
             "favicon",
             "file_dialog",
             "fps",
