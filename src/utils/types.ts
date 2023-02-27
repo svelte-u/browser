@@ -191,3 +191,12 @@ export type NetworkType =
 	| "unknown"
 
 export type NetworkEffectiveType = "slow-2g" | "2g" | "3g" | "4g" | undefined
+
+export interface RafFnOptions {
+	/**
+	 * Start the requestAnimationFrame loop immediately on creation
+	 *
+	 * @defaultValue true
+	 */
+	immediate?: boolean
+}
