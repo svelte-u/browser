@@ -1,5 +1,5 @@
 {
-    "total": 26,
+    "total": 27,
     "packages": {
         "index": [
             "active_el",
@@ -20,6 +20,7 @@
             "mouse",
             "mutation_observer",
             "network",
+            "notification",
             "permission",
             "preferred_lang",
             "push_notification",

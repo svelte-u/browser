@@ -1,8 +1,6 @@
 import { sleep } from "@sveu/shared"
-import type { Fn } from "@sveu/shared"
 
-import { beforeEach, describe, expect, it, vitest } from "vitest"
-import type { SpyInstance } from "vitest"
+import { describe, expect, it, vitest } from "vitest"
 
 import { mutation_observer } from "."
 
