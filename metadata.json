@@ -1,5 +1,5 @@
 {
-    "total": 28,
+    "total": 29,
     "packages": {
         "index": [
             "active_el",
@@ -29,7 +29,8 @@
             "support",
             "useragent",
             "utils",
-            "wake_lock"
+            "wake_lock",
+            "window_focus"
         ]
     }
 }
