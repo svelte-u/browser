@@ -406,3 +406,15 @@ export interface WebNotificationOptions {
 	 */
 	vibrate?: number[]
 }
+
+export type WakeLockType = "screen"
+
+export interface WakeLockSentinel extends EventTarget {
+	type: WakeLockType
+	released: boolean
+	release: () => Promise<void>
+}
+
+export type NavigatorWithWakeLock = Navigator & {
+	wakeLock: { request: (type: WakeLockType) => Promise<WakeLockSentinel> }
+}

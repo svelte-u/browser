@@ -1,5 +1,5 @@
 {
-    "total": 27,
+    "total": 28,
     "packages": {
         "index": [
             "active_el",
@@ -28,7 +28,8 @@
             "resize_observer",
             "support",
             "useragent",
-            "utils"
+            "utils",
+            "wake_lock"
         ]
     }
 }
