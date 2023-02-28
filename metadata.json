@@ -1,5 +1,5 @@
 {
-    "total": 30,
+    "total": 31,
     "packages": {
         "index": [
             "active_el",
@@ -31,7 +31,8 @@
             "utils",
             "wake_lock",
             "window_focus",
-            "window_scroll"
+            "window_scroll",
+            "window_size"
         ]
     }
 }

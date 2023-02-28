@@ -418,3 +418,24 @@ export interface WakeLockSentinel extends EventTarget {
 export type NavigatorWithWakeLock = Navigator & {
 	wakeLock: { request: (type: WakeLockType) => Promise<WakeLockSentinel> }
 }
+
+export interface WindowSizeOptions {
+	/** Initial width */
+	initial_width?: number
+
+	/** Initial height */
+	initial_height?: number
+
+	/**
+	 * Listen to window `orientationchange` event
+	 *
+	 * @defaultValue true
+	 */
+	orientation?: boolean
+
+	/**
+	 * Whether the scrollbar should be included in the width and height
+	 * @defaultValue true
+	 */
+	scrollbar?: boolean
+}
