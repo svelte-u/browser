@@ -3,6 +3,7 @@ import type { Readable } from "svelte/store"
 import type {
 	AnyFn,
 	ConfigurableEventFilter,
+	Fn,
 	IntervalFnOptions,
 } from "@sveu/shared"
 
@@ -452,4 +453,136 @@ export interface WebWorkerReturn<T = any> {
 	cleanup: () => void
 
 	wk: Readable<Worker | undefined>
+}
+
+export type WebSocketStatus = "OPEN" | "CONNECTING" | "CLOSED"
+
+export interface WebSocketOptions {
+	on_connected?: (ws: WebSocket) => void
+
+	on_disconnected?: (ws: WebSocket, event: CloseEvent) => void
+
+	on_error?: (ws: WebSocket, event: Event) => void
+
+	on_message?: (ws: WebSocket, event: MessageEvent) => void
+
+	/**
+	 * Send heartbeat for every x seconds passed
+	 *
+	 * @defaultValue false
+	 */
+	heartbeat?:
+		| boolean
+		| {
+				/**
+				 * Message for the heartbeat
+				 *
+				 * @defaultValue 'ping'
+				 */
+				message?: string | ArrayBuffer | Blob
+
+				/**
+				 * Interval, in seconds
+				 *
+				 * @defaultValue 1
+				 */
+				interval?: number
+
+				/**
+				 * Heartbeat response timeout, in seconds
+				 *
+				 * @defaultValue 1
+				 */
+				pong_timeout?: number
+		  }
+
+	/**
+	 * Enabled auto reconnect
+	 *
+	 * @defaultValue false
+	 */
+	auto_reconnect?:
+		| boolean
+		| {
+				/**
+				 * Maximum retry times.
+				 *
+				 * Or you can pass a predicate function (which returns true if you want to retry).
+				 *
+				 * @defaultValue -1
+				 */
+				retries?: number | (() => boolean)
+
+				/**
+				 * Delay for reconnect, in seconds
+				 *
+				 * @defaultValue 1
+				 */
+				delay?: number
+
+				/**
+				 * On maximum retry times reached.
+				 */
+				on_failed?: Fn
+		  }
+
+	/**
+	 * Automatically open a connection
+	 *
+	 * @defaultValue true
+	 */
+	immediate?: boolean
+
+	/**
+	 * Automatically close a connection
+	 *
+	 * @defaultValue true
+	 */
+	auto_close?: boolean
+
+	/**
+	 * List of one or more sub-protocol strings
+	 *
+	 * @defaultValue []
+	 */
+	protocols?: string[]
+}
+
+export interface WebSocketReturn<T> {
+	/**
+	 * Reference to the latest data received via the websocket,
+	 * can be watched to respond to incoming messages
+	 */
+	data: Readable<T | null>
+
+	/**
+	 * The current websocket status, can be only one of:
+	 * 'OPEN', 'CONNECTING', 'CLOSED'
+	 */
+	status: Readable<WebSocketStatus>
+
+	/**
+	 * Closes the websocket connection gracefully.
+	 */
+	close: WebSocket["close"]
+
+	/**
+	 * Reopen the websocket connection.
+	 * If there the current one is active, will close it before opening a new one.
+	 */
+	open: Fn
+
+	/**
+	 * Sends data through the websocket connection.
+	 *
+	 * @param data - The data to send
+	 *
+	 * @param buffer - when the socket is not yet open, store the data into the buffer and sent them one connected. Default to true.
+	 */
+	send: (data: string | ArrayBuffer | Blob, buffer?: boolean) => boolean
+
+	/**
+	 * Reference to the WebSocket instance.
+	 */
+	ws: Readable<WebSocket | undefined>
 }
