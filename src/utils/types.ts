@@ -1,6 +1,10 @@
 import type { Readable } from "svelte/store"
 
-import type { AnyFn, IntervalFnOptions } from "@sveu/shared"
+import type {
+	AnyFn,
+	ConfigurableEventFilter,
+	IntervalFnOptions,
+} from "@sveu/shared"
 
 export interface MemoryInfo {
 	/**
@@ -293,3 +297,38 @@ export interface IntersectionObserverOptions {
 	 */
 	threshold?: number | number[]
 }
+
+export interface Position {
+	x: number
+	y: number
+}
+
+export interface MouseOptions extends ConfigurableEventFilter {
+	/**
+	 * Mouse position based by page, client, or relative to previous position
+	 *
+	 * @defaultValue 'page'
+	 */
+	type?: "page" | "client" | "movement"
+
+	/**
+	 * Listen to `touchmove` events
+	 *
+	 * @defaultValue true
+	 */
+	touch?: boolean
+
+	/**
+	 * Reset to initial value when `touchend` event fired
+	 *
+	 * @defaultValue false
+	 */
+	reset_on_touch_ends?: boolean
+
+	/**
+	 * Initial values
+	 */
+	initial_value?: Position
+}
+
+export type MouseSourceType = "mouse" | "touch" | null

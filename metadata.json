@@ -1,5 +1,5 @@
 {
-    "total": 24,
+    "total": 25,
     "packages": {
         "index": [
             "active_el",
@@ -17,6 +17,7 @@
             "intersection_observer",
             "media_query",
             "memory",
+            "mouse",
             "network",
             "permission",
             "preferred_lang",
