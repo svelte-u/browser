@@ -439,3 +439,17 @@ export interface WindowSizeOptions {
 	 */
 	scrollbar?: boolean
 }
+
+export type WorkerFn = (...args: unknown[]) => Worker
+
+export interface WebWorkerReturn<T = any> {
+	data: Readable<T>
+
+	error: Readable<T>
+
+	post: (typeof Worker.prototype)["postMessage"]
+
+	cleanup: () => void
+
+	wk: Readable<Worker | undefined>
+}
