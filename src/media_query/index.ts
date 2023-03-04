@@ -1,4 +1,4 @@
-import { to_readable, to_writable, unstore } from "@sveu/shared"
+import { browser, to_readable, to_writable, unstore } from "@sveu/shared"
 
 import { on } from "../event_listener"
 import { support } from "../support"
@@ -12,7 +12,7 @@ import { support } from "../support"
  *
  */
 export function media_query(query: string) {
-	if (!window) return to_readable(false)
+	if (!browser) return to_readable(false)
 
 	const supported = support("matchMedia", "window")
 
