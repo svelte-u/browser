@@ -9,7 +9,7 @@ import { on } from "../event_listener"
  */
 export function active_el<T extends HTMLElement>() {
 	const { set, subscribe } = to_writable<T | null>(
-		(document?.activeElement as T) || null
+		browser ? (document?.activeElement as T) : null
 	)
 
 	function handler() {
