@@ -67,17 +67,9 @@ export function network() {
 	}
 
 	if (browser) {
-		on(window, "offline", () => {
-			online.set(false)
+		on(window, "offline", update_network_info)
 
-			offline_at.set(Date.now())
-		})
-
-		on(window, "online", () => {
-			online.set(true)
-
-			online_at.set(Date.now())
-		})
+		on(window, "online", update_network_info)
 	}
 
 	if (unstore(supported))
