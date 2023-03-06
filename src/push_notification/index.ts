@@ -1,4 +1,4 @@
-import { sleep, to_writable, unstore } from "@sveu/shared"
+import { sleep, to_readable, to_writable, unstore } from "@sveu/shared"
 
 import { support } from "../support"
 import type { PushOptions } from "../utils"
@@ -55,7 +55,7 @@ export function push(sw_url: string, vapid: base64, options: PushOptions = {}) {
 			(await navigator.serviceWorker.getRegistration(sw_url)) ??
 			(await navigator.serviceWorker.register(sw_url))
 
-		await sleep(100)
+		await sleep(0.1)
 
 		const subscription =
 			(await register.pushManager.getSubscription()) ??
@@ -70,5 +70,5 @@ export function push(sw_url: string, vapid: base64, options: PushOptions = {}) {
 
 	if (unstore(supported)) init()
 
-	return { result, supported }
+	return { result: to_readable(result), supported }
 }
