@@ -11,6 +11,12 @@ import type { Breakpoints } from "../utils"
  * @param breakpoints - Key value pairs of breakpoints
  *
  * @returns
+ * - `gt` - Checks if the viewport is greater than the breakpoint
+ * - `gte` - Checks if the viewport is greater than or equal to the breakpoint
+ * - `lt` - Checks if the viewport is smaller than the breakpoint
+ * - `lte` - Checks if the viewport is smaller than or equal to the breakpoint
+ * - `bn` - Checks if the viewport is between the two breakpoints
+ * - `shortcuts` - Shortcut methods for each breakpoint
  */
 export function breakpoints<K extends string>(breakpoints: Breakpoints<K>) {
 	/**
