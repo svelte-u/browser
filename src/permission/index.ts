@@ -15,13 +15,13 @@ import type {
 } from "../utils"
 
 export function permission(
-	permissionDesc:
+	permission_desc:
 		| GeneralPermissionDescriptor
 		| GeneralPermissionDescriptor["name"],
 	options?: PermissionOptions<false>
 ): PermissionReturn
 export function permission(
-	permissionDesc:
+	permission_desc:
 		| GeneralPermissionDescriptor
 		| GeneralPermissionDescriptor["name"],
 	options: PermissionOptions<true>
