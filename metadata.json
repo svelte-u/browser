@@ -1,5 +1,5 @@
 {
-    "total": 35,
+    "total": 36,
     "packages": {
         "index": [
             "active_el",
@@ -22,6 +22,7 @@
             "mutation_observer",
             "network",
             "notification",
+            "performance_observer",
             "permission",
             "preferred_lang",
             "push_notification",

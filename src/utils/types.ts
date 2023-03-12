@@ -549,3 +549,12 @@ export interface VibrateOptions {
 	 */
 	interval?: number
 }
+
+export interface PerformanceObserverOptions extends PerformanceObserverInit {
+	/**
+	 * Start the observer immediate.
+	 *
+	 * @defaultValue true
+	 */
+	immediate?: boolean
+}
