@@ -522,3 +522,30 @@ export interface WebSocketReturn<T> {
 	 */
 	ws: Readable<WebSocket | undefined>
 }
+
+export interface VibrateOptions {
+	/**
+	 *
+	 * Vibration Pattern
+	 *
+	 * An array of values describes alternating periods in which the
+	 * device is vibrating and not vibrating. Each value in the array
+	 * is converted to an integer, then interpreted alternately as
+	 * the number of milliseconds the device should vibrate and the
+	 * number of seconds it should not be vibrating
+	 *
+	 * @defaultValue []
+	 *
+	 */
+	pattern?: number[] | number
+
+	/**
+	 * Interval to run a persistent vibration, in seconds
+	 *
+	 * Pass `0` to disable
+	 *
+	 * @defaultValue 0
+	 *
+	 */
+	interval?: number
+}

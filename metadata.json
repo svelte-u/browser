@@ -1,5 +1,5 @@
 {
-    "total": 34,
+    "total": 35,
     "packages": {
         "index": [
             "active_el",
@@ -30,6 +30,7 @@
             "support",
             "useragent",
             "utils",
+            "vibrate",
             "wake_lock",
             "websocket",
             "window_focus",
