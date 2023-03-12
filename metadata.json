@@ -1,5 +1,5 @@
 {
-    "total": 33,
+    "total": 34,
     "packages": {
         "index": [
             "active_el",
@@ -7,6 +7,7 @@
             "broadcast_channel",
             "clipboard",
             "dom_visible",
+            "event_dispatcher",
             "event_listener",
             "eye_dropper",
             "favicon",
