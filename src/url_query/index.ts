@@ -1,4 +1,5 @@
 import { browser, noop, unstore, watchable } from "@sveu/shared"
+import type { Dict, PartialWritable } from "@sveu/shared"
 
 import { on } from "../event_listener"
 import type { UrlQueryOptions } from "../utils"
@@ -19,18 +20,18 @@ import type { UrlQueryOptions } from "../utils"
  *
  * @returns a partial writable store
  */
-export function url_query<T>(
+export function url_query<T extends Dict>(
 	mode: "history" | "hash" | "hash-query" = "history",
 	options: UrlQueryOptions<T> = {}
-) {
+): PartialWritable<T> {
 	const {
-		fallback = {},
+		fallback = {} as T,
 		remove_nullish = true,
 		remove_falsy = false,
 		write: enable_write = true,
 	} = options
 
-	if (!browser) return watchable(fallback, noop)
+	if (!browser) return watchable<T>(fallback, noop)
 
 	const state = watchable(fallback, () => {
 		const queries = new URLSearchParams("")
@@ -117,8 +118,9 @@ export function url_query<T>(
 
 		for (const key of queries.keys()) {
 			const query_for_key = queries.getAll(key)
-
-			unstore(state)[key] =
+			const _state = unstore(state)
+			// @ts-expect-error - This is a valid use case
+			_state[key] =
 				query_for_key.length > 1
 					? query_for_key
 					: queries.get(key) || ""

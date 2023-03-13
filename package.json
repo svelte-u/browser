@@ -62,6 +62,6 @@
         "access": "public"
     },
     "dependencies": {
-        "@sveu/shared": "^0.8.2"
+        "@sveu/shared": "^0.8.5"
     }
 }
