@@ -6,11 +6,11 @@ import type { PerformanceObserverOptions } from "../utils"
 /**
  * Observe performance metrics.
  *
- * @see https://developer.mozilla.org/en-US/docs/Web/API/PerformanceObserver
+ * @param fn - Callback function to be invoked when a performance entry is added to the performance entry buffer.
+
+* @see https://developer.mozilla.org/en-US/docs/Web/API/PerformanceObserver
  * @param options - Options for the observer.
  * - `immediate` - Start the observer immediate.
- *
- * @param callback - Callback function to be invoked when a performance entry is added to the performance entry buffer.
  *
  * @returns
  * - `supported` - Whether the browser supports the PerformanceObserver API.
@@ -18,8 +18,8 @@ import type { PerformanceObserverOptions } from "../utils"
  * - `stop` - Stop the observer.
  */
 export function performance_observer(
-	options: PerformanceObserverOptions,
-	callback: PerformanceObserverCallback
+	fn: PerformanceObserverCallback,
+	options: PerformanceObserverOptions = {}
 ) {
 	const { immediate = true, ...performance_options } = options
 
@@ -35,7 +35,7 @@ export function performance_observer(
 		if (unstore(supported)) {
 			stop()
 
-			observer = new PerformanceObserver(callback)
+			observer = new PerformanceObserver(fn)
 
 			observer.observe(performance_options)
 		}
