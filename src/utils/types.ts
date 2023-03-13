@@ -558,3 +558,29 @@ export interface PerformanceObserverOptions extends PerformanceObserverInit {
 	 */
 	immediate?: boolean
 }
+
+export interface UrlQueryOptions<T> {
+	/**
+	 * Remove `null` and `undefined` values from the query object
+	 *
+	 * @defaultValue true
+	 */
+	remove_nullish?: boolean
+
+	/**
+	 * Remove `false` values from the query object
+	 *
+	 * @defaultValue false
+	 */
+	remove_falsy?: boolean
+
+	/** A fallback value to use when the query is empty */
+	fallback?: T
+
+	/**
+	 * Write back to `window.history` automatically
+	 *
+	 * @defaultValue true
+	 */
+	write?: boolean
+}

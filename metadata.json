@@ -1,5 +1,5 @@
 {
-    "total": 37,
+    "total": 38,
     "packages": {
         "index": [
             "active_el",
@@ -30,6 +30,7 @@
             "resize_observer",
             "screen_orientation",
             "support",
+            "url_query",
             "useragent",
             "utils",
             "vibrate",
