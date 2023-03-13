@@ -1,5 +1,5 @@
 {
-    "total": 36,
+    "total": 37,
     "packages": {
         "index": [
             "active_el",
@@ -28,6 +28,7 @@
             "push_notification",
             "raf_fn",
             "resize_observer",
+            "screen_orientation",
             "support",
             "useragent",
             "utils",
