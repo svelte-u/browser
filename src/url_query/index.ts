@@ -18,7 +18,7 @@ import type { UrlQueryOptions } from "../utils"
  * - `remove_falsy` - Whether to remove falsy values from the URL query string
  * - `write` - Whether to write the URL query string to the URL
  *
- * @returns a partial writable store
+ * @returns a watchable store
  */
 export function url_query<T extends Dict>(
 	mode: "history" | "hash" | "hash-query" = "history",
