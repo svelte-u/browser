@@ -1,5 +1,5 @@
 import { browser, noop, unstore, watchable } from "@sveu/shared"
-import type { Dict, PartialWritable } from "@sveu/shared"
+import type { Dict, Watchable } from "@sveu/shared"
 
 import { on } from "../event_listener"
 import type { UrlQueryOptions } from "../utils"
@@ -23,7 +23,7 @@ import type { UrlQueryOptions } from "../utils"
 export function url_query<T extends Dict>(
 	mode: "history" | "hash" | "hash-query" = "history",
 	options: UrlQueryOptions<T> = {}
-): PartialWritable<T> {
+): Watchable<T> {
 	const {
 		fallback = {} as T,
 		remove_nullish = true,

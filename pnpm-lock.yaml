@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@sveltejs/vite-plugin-svelte': ^2.0.2
-  '@sveu/shared': ^0.8.5
+  '@sveu/shared': ^0.9.0
   '@testing-library/svelte': ^3.2.2
   '@trivago/prettier-plugin-sort-imports': ^4.0.0
   '@types/fs-extra': ^11.0.1
@@ -24,7 +24,7 @@ specifiers:
   vitest: ^0.28.5
 
 dependencies:
-  '@sveu/shared': 0.8.5
+  '@sveu/shared': 0.9.0
 
 devDependencies:
   '@sveltejs/vite-plugin-svelte': 2.0.2_svelte@3.55.1
@@ -856,8 +856,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveu/shared/0.8.5:
-    resolution: {integrity: sha512-RB8d7zofVf6OAjsyqaptjAQWxaJbTRYKqOhZqEJggDiZSsOxrdVENpTjjhoLDR1IRXQ4fjGM/5ePq9LKnUZDZQ==}
+  /@sveu/shared/0.9.0:
+    resolution: {integrity: sha512-ct7myvdkP1B5GxFfAsnr9KxEUn8BWT006Y8QDTPmcxNpZGdFM+hYO6rGI1ATVglLMzaUEvDpWveFtBSXnm5u7w==}
     dev: false
 
   /@testing-library/dom/8.20.0:
