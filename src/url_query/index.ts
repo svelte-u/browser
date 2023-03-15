@@ -17,6 +17,7 @@ import type { UrlQueryOptions } from "../utils"
  * - `remove_nullish` - Whether to remove nullish values from the URL query string
  * - `remove_falsy` - Whether to remove falsy values from the URL query string
  * - `write` - Whether to write the URL query string to the URL
+ * - `encode` - Whether to encode the URL query string
  *
  * @returns a watchable store
  */
@@ -29,6 +30,7 @@ export function url_query<T extends Dict>(
 		remove_nullish = true,
 		remove_falsy = false,
 		write: enable_write = true,
+		encode = false,
 	} = options
 
 	if (!browser) return watchable<T>(fallback, noop)
@@ -39,13 +41,20 @@ export function url_query<T extends Dict>(
 		const _state = unstore(state)
 
 		Object.keys(_state).forEach((key) => {
-			const mapEntry = _state[key]
+			const item = _state[key]
 
-			if (Array.isArray(mapEntry))
-				mapEntry.forEach((value) => queries.append(key, value))
-			else if (remove_nullish && mapEntry == null) queries.delete(key)
-			else if (remove_falsy && !mapEntry) queries.delete(key)
-			else queries.set(key, mapEntry)
+			if (Array.isArray(item) || typeof item === "object") {
+				const serialized = JSON.stringify(item)
+
+				queries.set(
+					key,
+					encode ? encodeURIComponent(serialized) : serialized
+				)
+			} else queries.set(key, item)
+
+			if (remove_falsy && !item) queries.delete(key)
+
+			if (remove_nullish && item === null) queries.delete(key)
 		})
 
 		write(queries)
@@ -118,8 +127,9 @@ export function url_query<T extends Dict>(
 
 		for (const key of queries.keys()) {
 			const query_for_key = queries.getAll(key)
-			const _state = unstore(state)
-			// @ts-expect-error - This is a valid use case
+
+			const _state = unstore(state) as Dict
+
 			_state[key] =
 				query_for_key.length > 1
 					? query_for_key
