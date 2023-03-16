@@ -1,5 +1,5 @@
 {
-    "total": 38,
+    "total": 39,
     "packages": {
         "index": [
             "active_el",
@@ -29,6 +29,7 @@
             "raf_fn",
             "resize_observer",
             "screen_orientation",
+            "storage",
             "support",
             "url_query",
             "useragent",
