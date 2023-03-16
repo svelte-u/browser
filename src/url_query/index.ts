@@ -35,13 +35,11 @@ export function url_query<T extends Dict>(
 
 	if (!browser) return watchable<T>(fallback, noop)
 
-	const state = watchable(fallback, () => {
+	const state = watchable(fallback, (_, new_state) => {
 		const queries = new URLSearchParams("")
 
-		const _state = unstore(state)
-
-		Object.keys(_state).forEach((key) => {
-			const item = _state[key]
+		Object.keys(new_state).forEach((key) => {
+			const item = new_state[key]
 
 			if (Array.isArray(item) || typeof item === "object") {
 				const serialized = JSON.stringify(item)
