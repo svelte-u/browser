@@ -1,4 +1,4 @@
-import { to_readable, to_writable } from "@sveu/shared"
+import { browser, to_readable, to_writable } from "@sveu/shared"
 
 import { on } from "../event_listener"
 
@@ -10,7 +10,7 @@ import { on } from "../event_listener"
  * - `y`: A readable store with the current window scroll y position.
  */
 export function window_scroll() {
-	if (!window) return { x: to_readable(0), y: to_readable(0) }
+	if (!browser) return { x: to_readable(0), y: to_readable(0) }
 
 	const x = to_writable(window.scrollX)
 
