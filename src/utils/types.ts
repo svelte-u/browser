@@ -626,3 +626,23 @@ export interface StorageOptions<T> {
 	 */
 	sync?: boolean
 }
+
+export type KeyPredicate = (event: KeyboardEvent) => boolean
+
+export type KeyFilter = true | string | string[] | KeyPredicate
+
+export type KeyStrokeEvents = "keydown" | "keypress" | "keyup"
+
+export interface OnKeyStrokeOptions {
+	/**
+	 * The key(s) to listen to.
+	 */
+	event?: KeyStrokeEvents
+
+	/**
+	 * The target element to listen to.
+	 */
+	target?: EventTarget | null | undefined
+
+	passive?: boolean
+}
