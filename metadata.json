@@ -1,8 +1,9 @@
 {
-    "total": 40,
+    "total": 41,
     "packages": {
         "index": [
             "active_el",
+            "base64",
             "breakpoints",
             "broadcast_channel",
             "clipboard",

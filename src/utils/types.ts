@@ -646,3 +646,20 @@ export interface OnKeyStrokeOptions {
 
 	passive?: boolean
 }
+
+
+export interface ToDataURLOptions {
+	/**
+	 * MIME type
+	 */
+	type?: string | undefined
+	/**
+	 * Image quality of jpeg or webp
+	 */
+	quality?: any
+}
+
+export interface Base64ObjectOptions<T> {
+	serializer: (v: T) => string
+}
+
