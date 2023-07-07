@@ -30,13 +30,13 @@ pnpm git:add && pnpm commit
 
 ### Existing functions
 
-Feel free to enhance the existing functions. Please try not to introduce breaking changes unless absolutely necessary.
+Feel free to enhance the existing functions. You can add more tests, more examples, or even more features.
 
 ### New functions
 
 There are some notes for adding new functions
 
-- Before you start working, it's better to discuss the function you want to add in [discord](https://discord.gg/XM5uQhDHfZ).
+- Before you start working, it's better to discuss the function you want to add in [discord](https://discord.gg/nbkcHgDXPc).
 - Try not to introduce 3rd-party dependencies as this package is aimed to be as lightweight as possible.
 - If you'd like to introduce 3rd-party dependencies, please contribute to [@sveu/extend](https://github.com/svelte-u/extend).
 - Details explained in the [Function Folder](#function-folder) section.
@@ -60,19 +60,14 @@ for `index.ts` you should export the function with names.
 
 ```ts
 // DO
-export { my_fnction }
+export { myFunction }
 // Do
-export function my_function() {}
-
+export function myFunction() {}
 // DON'T
-export default my_function
+export default myFunction
 // DON'T
-export default function my_function() {}
+export default function myFunction() {}
 ```
-
-## Code Style
-
-We prefer [snake case syntax](https://en.wikipedia.org/wiki/Snake_case), and indent with 4 spaces.
 
 ## Thanks
 
