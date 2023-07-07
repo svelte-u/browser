@@ -37,31 +37,31 @@
         }
     },
     "devDependencies": {
-        "@sveltejs/vite-plugin-svelte": "^2.2.0",
-        "@testing-library/svelte": "^3.2.2",
+        "@sveltejs/vite-plugin-svelte": "^2.4.2",
+        "@testing-library/svelte": "^4.0.3",
         "@trivago/prettier-plugin-sort-imports": "^4.1.1",
         "@types/fs-extra": "^11.0.1",
-        "@types/node": "^20.1.0",
-        "@typescript-eslint/eslint-plugin": "^5.59.2",
-        "@typescript-eslint/parser": "^5.59.2",
-        "bumpp": "^9.1.0",
-        "eslint": "^8.40.0",
+        "@types/node": "^20.4.0",
+        "@typescript-eslint/eslint-plugin": "^5.61.0",
+        "@typescript-eslint/parser": "^5.61.0",
+        "bumpp": "^9.1.1",
+        "eslint": "^8.44.0",
         "eslint-config-prettier": "^8.8.0",
         "eslint-plugin-tsdoc": "^0.2.17",
-        "fast-glob": "^3.2.12",
+        "fast-glob": "^3.3.0",
         "fs-extra": "^11.1.1",
-        "jsdom": "^21.1.1",
+        "jsdom": "^22.1.0",
         "prettier": "^2.8.8",
-        "svelte": "^3.59.0",
-        "tsup": "^6.7.0",
+        "svelte": "^4.0.4",
+        "tsup": "^7.1.0",
         "tsx": "^3.12.7",
-        "typescript": "^5.0.4",
-        "vitest": "^0.31.0"
+        "typescript": "^5.1.6",
+        "vitest": "^0.32.4"
     },
     "publishConfig": {
         "access": "public"
     },
     "dependencies": {
-        "@sveu/shared": "^0.10.1"
+        "@sveu/shared": "^1.0.1"
     }
 }

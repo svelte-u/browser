@@ -1,20 +1,16 @@
 import {
 	browser,
-	intervalfn,
-	is_ws,
+	intervalFn,
+	isWs,
 	on_destroy,
-	to_readable,
-	to_writable,
+	toReadable,
+	toWritable,
 	unstore,
 } from "@sveu/shared"
 import type { Fn } from "@sveu/shared"
 
-import { on } from "../event_listener"
-import type {
-	WebSocketOptions,
-	WebSocketReturn,
-	WebSocketStatus,
-} from "../utils"
+import { on } from "../eventListener"
+import type { WebSocketOptions, WebSocketStatus } from "../utils"
 
 const DEFAULT_PING_MESSAGE = "ping"
 
@@ -29,34 +25,84 @@ function resolve_nested_options<T>(options: T | true): T {
  * @param url - The websocket url.
  *
  * @param options - The websocket options.
+ * - `onConnected` - The callback to be called when the websocket is connected.
+ * - `onDisconnected` - The callback to be called when the websocket is disconnected.
+ * - `onError` - The callback to be called when the websocket has an error.
+ * - `onMessage` - The callback to be called when the websocket receives a message.
+ * - `immediate` - Whether to connect to the websocket immediately. Default to `true`.
+ * - `autoClose` - Whether to close the websocket connection when the websocket is disconnected. Default to `true`.
+ * - `protocols` - The protocols to be used for the websocket connection. Default to `[]`.
+ * - `heartbeat` - The heartbeat options. default to `false`.
+ * - `heartbeat.message` - The message to be sent to the server for the heartbeat. Default to `ping`.
+ * - `heartbeat.interval` - The interval in second to send the heartbeat message. Default to `1`.
+ * - `heartbeat.timeout` - The timeout in second to wait for the pong message. Default to `1`.
+ * - `autoReconnect` - Whether to automatically reconnect to the websocket server when the connection is closed. Default to `true`.
+ * - `autoReconnect.retries` - The number of retries to reconnect to the websocket server. Default to `-1`.
+ * - `autoReconnect.delay` - The delay in second before reconnecting to the websocket server. Default to `1`.
+ * - `autoReconnect.onFailed` - The callback to be called On maximum retry times reached.
+ *
+ * @example
+ * ```ts
+ * const { data, status, ws, close, open, send } = websocket("ws://localhost:3000", {
+ * 	onConnected: () => console.log("connected"),
+ * 	onDisconnected: () => console.log("disconnected"),
+ * 	onError: (e) => console.log(e),
+ * 	onMessage: (data) => console.log(data),
+ * 	immediate: true,
+ * 	autoClose: true,
+ * 	protocols: [],
+ * 	heartbeat: {
+ * 		message: "ping",
+ * 		interval: 1,
+ * 		timeout: 1,
+ * 	},
+ * 	autoReconnect: {
+ * 		retries: -1,
+ * 		delay: 1,
+ * 		onFailed: () => console.log("failed"),
+ * 	},
+ * })
+ * ```
+ *
+ * @example
+ * ```ts
+ * const { data, status, ws, close, open, send } = websocket("ws://localhost:3000", {
+ * 	onConnected: () => console.log("connected"),
+ * 	onDisconnected: () => console.log("disconnected"),
+ * 	onError: (e) => console.log(e),
+ * 	onMessage: (data) => console.log(data),
+ * 	immediate: true,
+ * 	autoClose: true,
+ * 	protocols: [],
+ * 	heartbeat: true,
+ * 	autoReconnect: true,
+ * })
+ * ```
  *
  * @returns
  * - `data`: The data received from the websocket server.
  * - `status`: The current websocket status, can be only one of: 'OPEN', 'CONNECTING', 'CLOSED'
- * - `ws`: Reference to the WebSocket instance.
+ * - `ws`: WebSocket instance.
  * - `close`: Closes the websocket connection gracefully.
  * - `open`: Reopen the websocket connection. If there the current one is active, will close it before opening a new one.
  * - `send`: Sends data through the websocket connection.
  */
-export function websocket<T>(
-	url: string,
-	options: WebSocketOptions = {}
-): WebSocketReturn<T> {
+export function websocket<T>(url: string, options: WebSocketOptions = {}) {
 	const {
-		on_connected,
-		on_disconnected,
-		on_error,
-		on_message,
+		onConnected,
+		onDisconnected,
+		onError,
+		onMessage,
 		immediate = true,
-		auto_close = true,
+		autoClose = true,
 		protocols = [],
 	} = options
 
-	const data = to_writable<T | null>(null)
+	const data = toWritable<T | null>(null)
 
-	const status = to_writable<WebSocketStatus>("CLOSED")
+	const status = toWritable<WebSocketStatus>("CLOSED")
 
-	const ws_store = to_writable<WebSocket | undefined>(undefined)
+	const ws_store = toWritable<WebSocket | undefined>(undefined)
 
 	let heartbeat_pause: Fn | undefined
 
@@ -139,7 +185,7 @@ export function websocket<T>(
 		ws.onopen = () => {
 			status.set("OPEN")
 
-			on_connected?.(ws)
+			onConnected?.(ws)
 
 			heartbeat_resume?.()
 
@@ -151,14 +197,14 @@ export function websocket<T>(
 
 			ws_store.set(undefined)
 
-			on_disconnected?.(ws, event)
+			onDisconnected?.(ws, event)
 
-			if (!explicitly_closed && options.auto_reconnect) {
+			if (!explicitly_closed && options.autoReconnect) {
 				const {
 					retries = -1,
 					delay = 1,
-					on_failed,
-				} = resolve_nested_options(options.auto_reconnect)
+					onFailed,
+				} = resolve_nested_options(options.autoReconnect)
 				retried += 1
 
 				if (
@@ -168,12 +214,12 @@ export function websocket<T>(
 					setTimeout(_init, delay * 1000)
 				else if (typeof retries === "function" && retries())
 					setTimeout(_init, delay * 1000)
-				else on_failed?.()
+				else onFailed?.()
 			}
 		}
 
 		ws.onerror = (event) => {
-			on_error?.(ws, event)
+			onError?.(ws, event)
 		}
 
 		ws.onmessage = (event: MessageEvent<any>) => {
@@ -186,7 +232,7 @@ export function websocket<T>(
 
 			data.set(event.data)
 
-			on_message?.(ws, event)
+			onMessage?.(ws, event)
 		}
 	}
 
@@ -194,16 +240,16 @@ export function websocket<T>(
 		const {
 			message = DEFAULT_PING_MESSAGE,
 			interval = 1,
-			pong_timeout = 1,
+			pongTimeout = 1,
 		} = resolve_nested_options(options.heartbeat)
 
-		const { pause, resume } = intervalfn(
+		const { pause, resume } = intervalFn(
 			() => {
 				send(message, false)
 				pong_timeout_wait = setTimeout(() => {
 					// auto-reconnect will be trigger with ws.onclose()
 					close()
-				}, pong_timeout * 1000)
+				}, pongTimeout * 1000)
 			},
 			interval,
 			{ immediate: false }
@@ -214,9 +260,9 @@ export function websocket<T>(
 		heartbeat_resume = resume
 	}
 
-	if (immediate && is_ws) _init()
+	if (immediate && isWs) _init()
 
-	if (auto_close) {
+	if (autoClose) {
 		if (browser) on(window, "beforeunload", () => close())
 
 		on_destroy(close)
@@ -233,9 +279,9 @@ export function websocket<T>(
 	}
 
 	return {
-		data: to_readable(data),
-		status: to_readable(status),
-		ws: to_readable(ws_store),
+		data: toReadable(data),
+		status: toReadable(status),
+		ws: toReadable(ws_store),
 		close,
 		send,
 		open,

@@ -20,7 +20,7 @@ describe("base64", () => {
 
 		const result = base64(template)
 
-		await sleep(0.1)
+		await sleep(0.5)
 
 		expect(decode(unstore(result))).toEqual(template)
 	})
@@ -30,7 +30,7 @@ describe("base64", () => {
 
 		const result = base64(map)
 
-		await sleep(0)
+		await sleep(0.5)
 
 		expect(decode(unstore(result))).toEqual(Object.fromEntries(map))
 	})

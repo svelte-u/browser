@@ -1,4 +1,4 @@
-import { intervalfn, on_destroy } from "@sveu/shared"
+import { intervalFn, on_destroy } from "@sveu/shared"
 import type { Pauseable } from "@sveu/shared"
 
 import { support } from "../support"
@@ -13,9 +13,17 @@ import type { VibrateOptions } from "../utils"
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API
  *
+ * @example
+ * ```ts
+ * const { supported, intervalControls, start, stop } = vibrate({
+ * 	pattern: [1, 2, 3],
+ * 	interval: 5,
+ * })
+ * ```
+ *
  * @returns
  * - `supported` - Whether the browser supports the Vibration API
- * - `interval_controls` - Controls for the persistent vibration
+ * - `intervalControls` - Controls for the persistent vibration
  * - `start` - Start the vibration
  * - `stop` - Stop the vibration
  */
@@ -24,7 +32,7 @@ export function vibrate(options: VibrateOptions = {}) {
 
 	const supported = support("vibrate")
 
-	let interval_controls: Pauseable | undefined
+	let intervalControls: Pauseable | undefined
 
 	/** Start the vibration */
 	function start() {
@@ -41,13 +49,13 @@ export function vibrate(options: VibrateOptions = {}) {
 	/** Stop the vibration **/
 	function stop() {
 		if (supported) navigator.vibrate(0)
-		interval_controls?.pause()
+		intervalControls?.pause()
 	}
 
 	if (interval > 0) {
-		interval_controls = intervalfn(start, interval, {
+		intervalControls = intervalFn(start, interval, {
 			immediate: false,
-			immediate_callback: false,
+			immediateCallback: false,
 		})
 	}
 
@@ -55,7 +63,7 @@ export function vibrate(options: VibrateOptions = {}) {
 
 	return {
 		supported,
-		interval_controls,
+		intervalControls,
 		start,
 		stop,
 	}

@@ -2,8 +2,8 @@ import {
 	browser,
 	noop,
 	on_destroy,
-	to_readable,
-	to_writable,
+	toReadable,
+	toWritable,
 	unstore,
 } from "@sveu/shared"
 
@@ -16,10 +16,25 @@ import { WebWorkerReturn, WorkerFn } from "../utils"
  *
  * @param options - [WorkerOptions](https://developer.mozilla.org/en-US/docs/Web/API/Worker/Worker)
  *
+ * @example
+ * ```ts
+ * const { data, error, wk, post, cleanup } = worker("worker.js")
+ * ```
+ *
+ * @example
+ * ```ts
+ * const { data, error, wk, post, cleanup } = worker(() => new Worker("worker.js"))
+ * ```
+ *
+ * @example
+ * ```ts
+ * const { data, error, wk, post, cleanup } = worker(new Worker("worker.js"))
+ * ```
+ *
  * @returns
- * - `data` - Readable store with the data from the worker
- * - `error` - Readable store with the error from the worker
- * - `wk` - Readable store with the worker instance
+ * - `data` - Data from the worker
+ * - `error` - Error from the worker
+ * - `wk` - Worker instance
  * - `post` - Function to send data to the worker
  * - `cleanup` - Function to terminate the worker
  */
@@ -32,30 +47,45 @@ export function worker<T>(
  *
  * @param worker - Worker function or Worker instance
  *
+ * @example
+ * ```ts
+ * const { data, error, wk, post, cleanup } = worker("worker.js")
+ * ```
+ *
+ * @example
+ * ```ts
+ * const { data, error, wk, post, cleanup } = worker(() => new Worker("worker.js"))
+ * ```
+ *
+ * @example
+ * ```ts
+ * const { data, error, wk, post, cleanup } = worker(new Worker("worker.js"))
+ * ```
+ *
  * @returns
- * - `data` - Readable store with the data from the worker
- * - `error` - Readable store with the error from the worker
- * - `wk` - Readable store with the worker instance
+ * - `data` - Data from the worker
+ * - `error` - Error from the worker
+ * - `wk` - Worker instance
  * - `post` - Function to send data to the worker
  * - `cleanup` - Function to terminate the worker
  */
 export function worker<T>(worker: Worker | WorkerFn): WebWorkerReturn<T>
 export function worker<T>(
-	arg0: string | WorkerFn | Worker,
+	arg: string | WorkerFn | Worker,
 	options?: WorkerOptions
 ): WebWorkerReturn<T> {
 	let unsubscribe: () => void = noop
 
-	const data = to_writable<any>(null)
+	const data = toWritable<any>(null)
 
-	const error = to_writable<any>(null)
+	const error = toWritable<any>(null)
 
-	const wk = to_writable<Worker | undefined>(undefined)
+	const wk = toWritable<Worker | undefined>(undefined)
 
 	if (browser) {
-		if (typeof arg0 === "string") wk.set(new Worker(arg0, options))
-		else if (typeof arg0 === "function") wk.set(arg0())
-		else wk.set(arg0)
+		if (typeof arg === "string") wk.set(new Worker(arg, options))
+		else if (typeof arg === "function") wk.set(arg())
+		else wk.set(arg)
 
 		unsubscribe = wk.subscribe((_worker) => {
 			if (!_worker) return
@@ -70,7 +100,17 @@ export function worker<T>(
 		})
 	}
 
-	function post(value: T) {
+	/**
+	 * Send data to the worker
+	 *
+	 * @param value - Data to send
+	 *
+	 * @example
+	 * ```ts
+	 * post("Hello World!")
+	 * ```
+	 */
+	function post<Y>(value: Y) {
 		const _wk = unstore(wk)
 
 		if (!_wk) return
@@ -87,9 +127,9 @@ export function worker<T>(
 	on_destroy(cleanup)
 
 	return {
-		data: to_readable(data),
-		error: to_readable(error),
-		wk: to_readable(wk),
+		data: toReadable(data),
+		error: toReadable(error),
+		wk: toReadable(wk),
 		post,
 		cleanup,
 	}

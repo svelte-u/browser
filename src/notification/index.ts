@@ -1,13 +1,13 @@
 import {
-	create_event_hook,
+	createEventHook,
 	on_destroy,
-	to_readable,
-	to_writable,
+	toReadable,
+	toWritable,
 	unstore,
 } from "@sveu/shared"
 import type { EventHook } from "@sveu/shared"
 
-import { on } from "../event_listener"
+import { on } from "../eventListener"
 import { support } from "../support"
 import type { WebNotificationOptions } from "../utils"
 
@@ -17,28 +17,33 @@ import type { WebNotificationOptions } from "../utils"
  * @see https://developer.mozilla.org/en-US/docs/Web/API/notification
  * @param options - options
  *
+ * @example
+ * ```ts
+ * const { supported, notify, show, close, onClick, onShow, onError, onClose } = notification()
+ * ```
+ *
  * @returns
  * - `supported` - Whether the browser supports the Notification API.
  * - `notify` - The notification instance.
  * - `show` - Show the notification.
  * - `close` - Close the notification.
- * - `on_click` - The click event.
- * - `on_show` - The show event.
- * - `on_error` - The error event.
- * - `on_close` - The close event.
+ * - `onClick` - The click event.
+ * - `onShow` - The show event.
+ * - `onError` - The error event.
+ * - `onClose` - The close event.
  */
 export function notification(options: WebNotificationOptions = {}) {
 	const supported = support("Notification", "window")
 
-	const notification = to_writable<Notification | null>(null)
+	const notification = toWritable<Notification | null>(null)
 
-	const on_click: EventHook = create_event_hook<Event>()
+	const on_click: EventHook = createEventHook<Event>()
 
-	const on_show: EventHook = create_event_hook<Event>()
+	const on_show: EventHook = createEventHook<Event>()
 
-	const on_error: EventHook = create_event_hook<Event>()
+	const on_error: EventHook = createEventHook<Event>()
 
-	const on_close: EventHook = create_event_hook<Event>()
+	const on_close: EventHook = createEventHook<Event>()
 
 	async function request_permission() {
 		if (!unstore(supported)) return
@@ -76,7 +81,7 @@ export function notification(options: WebNotificationOptions = {}) {
 
 		const n = unstore(notification)
 
-		if (n !== null) {
+		if (n) {
 			n.onclick = (event: Event) => on_click.trigger(event)
 
 			n.onshow = (event: Event) => on_show.trigger(event)
@@ -103,12 +108,12 @@ export function notification(options: WebNotificationOptions = {}) {
 
 	return {
 		supported,
-		notify: to_readable(notification),
+		notify: toReadable(notification),
 		show,
 		close,
-		on_click: on_click.on,
-		on_show: on_show.on,
-		on_error: on_error.on,
-		on_close: on_close.on,
+		onClick: on_click.on,
+		onShow: on_show.on,
+		onError: on_error.on,
+		onClose: on_close.on,
 	}
 }

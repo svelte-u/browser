@@ -1,6 +1,6 @@
 import type { Readable } from "svelte/store"
 
-import { browser, to_readable, to_writable } from "@sveu/shared"
+import { browser, toReadable, toWritable } from "@sveu/shared"
 
 import type { Base64ObjectOptions, ToDataURLOptions } from "../utils"
 
@@ -77,6 +77,21 @@ function blob_to_base64(blob: Blob) {
  * - `type` - The MIME type to use. Only used if the target is a canvas or image
  * - `quality` - The image quality to use. Only used if the target is a canvas or image
  *
+ * @example
+ * ```ts
+ * const result = base64('Hello world')
+ * ```
+ *
+ * @example
+ * ```ts
+ * const result = base64(new Blob(['Hello world']))
+ * ```
+ *
+ * @example
+ * ```ts
+ * const result = base64(new ArrayBuffer(10))
+ * ```
+ *
  * @returns The base64 string readable store
  */
 export function base64(target: string): Readable<string>
@@ -107,7 +122,7 @@ export function base64<T>(
 	options?: Base64ObjectOptions<T[]>
 ): Readable<string>
 export function base64(target: unknown, options?: any) {
-	const base64 = to_writable("")
+	const base64 = toWritable("")
 
 	function execute() {
 		if (!browser) return
@@ -186,5 +201,5 @@ export function base64(target: unknown, options?: any) {
 
 	execute()
 
-	return to_readable(base64)
+	return toReadable(base64)
 }

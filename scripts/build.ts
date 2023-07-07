@@ -36,6 +36,14 @@ async function run() {
 
 		metadata.packages[module] = module_functions.map((f) => f.name)
 
+		// remove utils from the index module in metadata
+		if (module === "index") {
+			metadata.packages[module] = metadata.packages[module].filter(
+				(f: string) => f !== "utils"
+			)
+			metadata.total -= 1
+		}
+
 		if (module !== "index") {
 			pkg_exports[`./${module}`] = {
 				import: `./${module}.js`,

@@ -1,89 +1,101 @@
-import { browser, to_readable, to_writable } from "@sveu/shared"
+import { browser, toReadable, toWritable } from "@sveu/shared"
 
-import { on } from "../event_listener"
-import type { MouseOptions, MouseSourceType } from "../utils"
+import { on } from "../eventListener"
+import type {
+	MouseOptions,
+	MouseSourceType,
+	UseMouseCoordType,
+	UseMouseEventExtractor,
+} from "../utils"
+
+const builtin_extractors: Record<UseMouseCoordType, UseMouseEventExtractor> = {
+	page: (event) => [event.pageX, event.pageY],
+	client: (event) => [event.clientX, event.clientY],
+	screen: (event) => [event.screenX, event.screenY],
+	movement: (event) =>
+		event instanceof Touch ? null : [event.movementX, event.movementY],
+} as const
 
 /**
  * Reactive mouse position.
  *
  * @param options - The options for the mouse.
- * - `type` - The type of the mouse position. Either `page` or `client` or `movement`.
+ * - `type` - The type of the mouse position. Either `page` or `client` or `movement`, etc. Default is `page`.
  * - `touch` - Whether to listen to `touchmove` events. Default is `true`.
- * - `reset_on_touch_ends` - Whether to reset to the initial value when `touchend` event fired. Default is `false`.
- * - `initial_value` - The initial value.
- * - `event_filter` - The event filter.
+ * - `resetOnTouchEnds` - Whether to reset to the initial value when `touchend` event fired. Default is `false`.
+ * - `fallback` - The fallback position when the browser doesn't support mouse events.
+ * - `eventFilter` - The event filter.
  *
- * @returns The mouse position.
+ * @example
+ * ```ts
+ * const { x, y, type } = mouse()
+ * ```
+ *
+ * @returns
  * - `x` - The x position.
  * - `y` - The y position.
+ * - `type` - The source type of the mouse position.
  *
  */
 export function mouse(options: MouseOptions = {}) {
 	const {
 		type = "page",
 		touch = true,
-		reset_on_touch_ends = false,
-		initial_value = { x: 0, y: 0 },
-		event_filter,
+		resetOnTouchEnds = false,
+		fallback = { x: 0, y: 0 },
+		eventFilter,
 	} = options
 
-	const x = to_writable(initial_value.x)
+	const x = toWritable(fallback.x)
 
-	const y = to_writable(initial_value.y)
+	const y = toWritable(fallback.y)
 
-	const source_type = to_writable<MouseSourceType>(null)
+	const source_type = toWritable<MouseSourceType>(null)
+
+	const extractor =
+		typeof type === "function" ? type : builtin_extractors[type]
 
 	function mouse_handler(event: MouseEvent) {
-		if (type === "page") {
-			x.set(event.pageX)
+		const result = extractor(event)
 
-			y.set(event.pageY)
-		} else if (type === "client") {
-			x.set(event.clientX)
+		if (result) {
+			x.set(result[0])
 
-			y.set(event.clientY)
-		} else if (type === "movement") {
-			x.set(event.movementX)
+			y.set(result[1])
 
-			y.set(event.movementY)
+			source_type.set("mouse")
 		}
-
-		source_type.set("mouse")
 	}
 
 	function reset() {
-		x.set(initial_value.x)
-		y.set(initial_value.y)
+		x.set(fallback.x)
+		y.set(fallback.y)
 	}
 
 	function touch_handler(event: TouchEvent) {
 		if (event.touches.length > 0) {
-			const touch = event.touches[0]
+			const result = extractor(event.touches[0])
 
-			if (type === "page") {
-				x.set(touch.pageX)
+			if (result) {
+				x.set(result[0])
 
-				y.set(touch.pageY)
-			} else if (type === "client") {
-				x.set(touch.clientX)
+				y.set(result[1])
 
-				y.set(touch.clientY)
+				source_type.set("touch")
 			}
-
-			source_type.set("touch")
 		}
 	}
 
 	function mouse_handler_wrapper(event: MouseEvent) {
-		return event_filter === undefined
+		return eventFilter === undefined
 			? mouse_handler(event)
-			: event_filter(() => mouse_handler(event), {} as any)
+			: eventFilter(() => mouse_handler(event), {} as any)
 	}
 
 	function touch_handler_wrapper(event: TouchEvent) {
-		return event_filter === undefined
+		return eventFilter === undefined
 			? touch_handler(event)
-			: event_filter(() => touch_handler(event), {} as any)
+			: eventFilter(() => touch_handler(event), {} as any)
 	}
 
 	if (browser) {
@@ -104,14 +116,14 @@ export function mouse(options: MouseOptions = {}) {
 				passive: true,
 			})
 
-			if (reset_on_touch_ends)
+			if (resetOnTouchEnds)
 				on(window, "touchend", reset, { passive: true })
 		}
 	}
 
 	return {
-		x: to_readable(x),
-		y: to_readable(y),
-		source_type: to_readable(source_type),
+		x: toReadable(x),
+		y: toReadable(y),
+		type: toReadable(source_type),
 	}
 }

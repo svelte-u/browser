@@ -1,8 +1,8 @@
 import {
-	async_state,
+	asyncState,
 	on_destroy,
-	to_readable,
-	to_writable,
+	toReadable,
+	toWritable,
 	unstore,
 } from "@sveu/shared"
 
@@ -35,28 +35,40 @@ interface UserAgentDataBrand {
  *
  * @remarks This function use the User-Agent Client Hints api. See https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUAData
  *
+ * @example
+ * ```ts
+ * const { supported, mobile, arch, model, platform, platformVersion, bitness, brands } = useragent()
+ * ```
+ * @returns
+ * - `supported` - Whether the browser supports the User-Agent Client Hints api.
+ * - `mobile` - Whether the device is a mobile device.
+ * - `arch` - The architecture of the device.
+ * - `model` - The model of the device.
+ * - `platform` - The platform of the device.
+ * - `platformVersion` - The platform version of the device.
+ * - `bitness` - The bitness of the device.
+ * - `brands` - The brands of the device.
+ *
  */
 export function useragent() {
-	const mobile = to_writable(false)
+	const mobile = toWritable(false)
 
-	const arch = to_writable("")
+	const arch = toWritable("")
 
-	const model = to_writable("")
+	const model = toWritable("")
 
-	const platform = to_writable("")
+	const platform = toWritable("")
 
-	const platform_version = to_writable("")
+	const platformVersion = toWritable("")
 
-	const bitness = to_writable("")
+	const bitness = toWritable("")
 
-	const brands = to_writable<UserAgentDataBrand[]>([
-		{ name: "", version: "" },
-	])
+	const brands = toWritable<UserAgentDataBrand[]>([{ name: "", version: "" }])
 
 	const supported = support("userAgentData")
 
 	if (unstore(supported)) {
-		const { state } = async_state<UserAgentData>(
+		const { state } = asyncState<UserAgentData>(
 			// @ts-expect-error navigator.userAgentData is not supported in all browsers
 			navigator.userAgentData.getHighEntropyValues([
 				"architecture",
@@ -86,7 +98,7 @@ export function useragent() {
 
 			platform.set(v.platform)
 
-			platform_version.set(v.platformVersion)
+			platformVersion.set(v.platformVersion)
 
 			bitness.set(v.bitness)
 
@@ -105,12 +117,12 @@ export function useragent() {
 
 	return {
 		supported,
-		brands: to_readable(brands),
-		mobile: to_readable(mobile),
-		arch: to_readable(arch),
-		model: to_readable(model),
-		platform: to_readable(platform),
-		platform_version: to_readable(platform_version),
-		bitness: to_readable(bitness),
+		brands: toReadable(brands),
+		mobile: toReadable(mobile),
+		arch: toReadable(arch),
+		model: toReadable(model),
+		platform: toReadable(platform),
+		platformVersion: toReadable(platformVersion),
+		bitness: toReadable(bitness),
 	}
 }

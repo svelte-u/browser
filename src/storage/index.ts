@@ -1,8 +1,8 @@
-import { browser, noop, to_number, unstore, watchable } from "@sveu/shared"
+import { browser, noop, toNumber, unstore, watchable } from "@sveu/shared"
 import type { Dict, Watchable } from "@sveu/shared"
 
-import { on } from "../event_listener"
-import { url_query } from "../url_query"
+import { on } from "../eventListener"
+import { urlQuery } from "../urlQuery"
 import type { StorageOptions, StorageSerializer } from "../utils"
 
 const storage_serializers: Record<
@@ -18,7 +18,7 @@ const storage_serializers: Record<
 		write: (v: unknown) => JSON.stringify(v),
 	},
 	number: {
-		read: (v: number | string) => to_number(v),
+		read: (v: number | string) => toNumber(v),
 		write: (v: unknown) => String(v),
 	},
 	any: {
@@ -133,11 +133,50 @@ function get_store(store: "local" | "session" | "cookie") {
  * @param options - The options
  * - `store` - The store to use (local, session, cookie, url). Default: local
  * - `sync` - Whether to sync the data between tabs. Default: true
- * - `on_error` - The function to call when an error occurs. Default: console.error
+ * - `onError` - The function to call when an error occurs. Default: console.error
  * - `serializer` - The serializer to use.
  *
- * @returns A watchable store
  *
+ * @example
+ * ```ts
+ * const count = storage("count", 0)
+ *
+ * count.set(1)
+ *
+ * $count // 1
+ * ```
+ *
+ * @example
+ * ```ts
+ * const count = storage("count", 0, { store: "session" })
+ *
+ * const count = storage("count", 0, { store: "cookie" })
+ *
+ * const count = storage("count", 0, { store: "url" })
+ * ```
+ *
+ * @example
+ * ```ts
+ * const count = storage("count", 0, { sync: false })
+ *
+ * const count = storage("count", 0, { sync: false, store: "session" })
+ * ```
+ *
+ * @example
+ * ```ts
+ * const count = storage("count", 0, { onError: console.log })
+ *
+ * const count = storage("count", 0, { onError: (e) => console.log(e) })
+ * ```
+ *
+ * @example
+ * ```ts
+ * const count = storage("count", 0, { serializer: { read: (v) => v, write: (v) => v } })
+ *
+ * const count = storage("count", 0, { serializer: { read: (v) => v, write: (v) => v }, store: "session" })
+ * ```
+ *
+ * @returns A watchable store
  */
 export function storage<T>(
 	key: string,
@@ -147,7 +186,7 @@ export function storage<T>(
 	const {
 		store = "local",
 		sync = true,
-		on_error = (e) => {
+		onError = (e) => {
 			console.error(e)
 		},
 	} = options
@@ -159,7 +198,7 @@ export function storage<T>(
 
 		_fallback[key] = fallback
 
-		const query = url_query("history", { fallback: _fallback })
+		const query = urlQuery("history", { fallback: _fallback })
 
 		const data = watchable(fallback, (_, n) => {
 			// @ts-expect-error It's fine
@@ -226,7 +265,7 @@ export function storage<T>(
 				if (old_value !== serialized) _store?.set(key, serialized)
 			}
 		} catch (e) {
-			on_error(e)
+			onError(e)
 		}
 	}
 
@@ -237,7 +276,7 @@ export function storage<T>(
 		try {
 			data.set(read())
 		} catch (e) {
-			on_error(e)
+			onError(e)
 		} finally {
 			data.resume()
 		}

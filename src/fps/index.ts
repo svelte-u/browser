@@ -1,6 +1,6 @@
-import { to_writable } from "@sveu/shared"
+import { toWritable } from "@sveu/shared"
 
-import { raf_fn } from "../raf_fn"
+import { rafFn } from "../rafFn"
 import type { FpsOptions } from "../utils"
 
 /**
@@ -9,10 +9,20 @@ import type { FpsOptions } from "../utils"
  * @param options - Options
  * - `every` - Calculate the FPS on every x frames. Default: `10`
  *
+ * @example
+ * ```ts
+ * const fps = fps()
+ * ```
+ *
+ * @example
+ * ```ts
+ * const fps = fps({ every: 60 })
+ * ```
+ *
  * @returns Readable store
  */
 export function fps(options: FpsOptions = {}) {
-	const { subscribe, set } = to_writable(0)
+	const { subscribe, set } = toWritable(0)
 
 	if (typeof performance === "undefined") return { subscribe }
 
@@ -22,7 +32,7 @@ export function fps(options: FpsOptions = {}) {
 
 	let ticks = 0
 
-	raf_fn(() => {
+	rafFn(() => {
 		ticks += 1
 
 		if (ticks >= every) {

@@ -1,8 +1,8 @@
 import {
 	browser,
 	on_destroy,
-	to_readable,
-	to_writable,
+	toReadable,
+	toWritable,
 	unstore,
 } from "@sveu/shared"
 
@@ -12,29 +12,35 @@ import type { GeolocationOptions } from "../utils"
 /**
  * Reactive Geolocation API.
  *
- * @param options - Geolocation options.
+ * @param options
  * - `high` Whether to enable high accuracy. Defaults to `true`.
- * - `max_age` The maximum age of a cached position in seconds. Defaults to `3`.
+ * - `maxAge` The maximum age of a cached position in seconds. Defaults to `3`.
  * - `timeout` The timeout in seconds. Defaults to `27`.
+ * - `immediate` Whether to start watching the location immediately. Defaults to `true`.
+ *
+ * @example
+ * ```ts
+ * const { supported, coords, locatedAt, error, resume, pause } = geolocation()
+ * ```
  *
  * @returns
  * - `supported` Whether the Geolocation API is supported.
  * - `coords` The current coordinates.
- * - `located_at` The timestamp of the last location update.
+ * - `locatedAt` The timestamp of the last location update.
  * - `error` The last error.
  * - `resume` Resume watching the location.
  * - `pause` Pause watching the location.
  */
 export function geolocation(options: GeolocationOptions = {}) {
-	const { high = true, max_age = 3, timeout = 27, immediate = true } = options
+	const { high = true, maxAge = 3, timeout = 27, immediate = true } = options
 
 	const supported = support("geolocation")
 
-	const located_at = to_writable<number | null>(null)
+	const locatedAt = toWritable<number | null>(null)
 
-	const error = to_writable<GeolocationPositionError | null>(null)
+	const error = toWritable<GeolocationPositionError | null>(null)
 
-	const coords = to_writable<GeolocationPosition["coords"]>({
+	const coords = toWritable<GeolocationPosition["coords"]>({
 		accuracy: 0,
 		latitude: Infinity,
 		longitude: Infinity,
@@ -45,7 +51,7 @@ export function geolocation(options: GeolocationOptions = {}) {
 	})
 
 	function update(position: GeolocationPosition) {
-		located_at.set(position.timestamp)
+		locatedAt.set(position.timestamp)
 
 		coords.set({
 			accuracy: position.coords.accuracy,
@@ -69,7 +75,7 @@ export function geolocation(options: GeolocationOptions = {}) {
 				(err) => error.set(err),
 				{
 					enableHighAccuracy: high,
-					maximumAge: max_age * 1000,
+					maximumAge: maxAge * 1000,
 					timeout: timeout * 1000,
 				}
 			)
@@ -87,9 +93,9 @@ export function geolocation(options: GeolocationOptions = {}) {
 
 	return {
 		supported,
-		coords: to_readable(coords),
-		located_at: to_readable(located_at),
-		error: to_readable(error),
+		coords: toReadable(coords),
+		locatedAt: toReadable(locatedAt),
+		error: toReadable(error),
 		resume,
 		pause,
 	}

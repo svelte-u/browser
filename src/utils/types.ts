@@ -72,7 +72,7 @@ export interface PushOptions {
 	 *
 	 * @defaultValue true
 	 */
-	user_visible_only?: boolean
+	userVisibleOnly?: boolean
 }
 
 type DescriptorNamePolyfill =
@@ -136,7 +136,7 @@ export interface ClipboardOptions<Source> {
 	 *
 	 * @defaultValue 1.5
 	 */
-	copied_during?: number
+	copiedDuring?: number
 
 	/**
 	 * Whether fallback to document.execCommand('copy') if clipboard is undefined.
@@ -183,6 +183,13 @@ export interface FileDialogOptions {
 	 * @see [HTMLInputElement Capture](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/capture)
 	 */
 	capture?: string
+
+	/**
+	 * Reset when open file dialog.
+	 *
+	 * @defaultValue true
+	 * */
+	reset?: boolean
 }
 
 export type NetworkType =
@@ -235,11 +242,11 @@ export interface EyeDropper {
 
 export interface EyeDropperOptions {
 	/**
-	 * Initial sRGBHex.
+	 * A fallback value to use when the eye dropper is not supported.
 	 *
 	 * @defaultValue ''
 	 */
-	initial?: string
+	fallback?: string
 }
 
 export interface GeolocationOptions {
@@ -253,7 +260,7 @@ export interface GeolocationOptions {
 	 *
 	 * @defaultValue 3
 	 */
-	max_age?: number
+	maxAge?: number
 
 	/** The timeout in seconds.
 	 *
@@ -272,10 +279,27 @@ export interface GeolocationOptions {
 export interface ImageOptions {
 	/** Address of the resource */
 	src: string
+
 	/** Images to use in different situations, e.g., high-resolution displays, small monitors, etc. */
 	srcset?: string
+
 	/** Image sizes for different page layouts */
 	sizes?: string
+
+	/** Image alternative information */
+	alt?: string
+
+	/** Image classes */
+	class?: string
+
+	/** Image loading */
+	loading?: HTMLImageElement["loading"]
+
+	/** Image CORS settings */
+	crossOrigin?: string
+
+	/** Referrer policy for fetch https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy */
+	referrerPolicy?: HTMLImageElement["referrerPolicy"]
 }
 
 export interface IntersectionObserverOptions {
@@ -304,13 +328,19 @@ export interface Position {
 	y: number
 }
 
+export type UseMouseCoordType = "page" | "client" | "screen" | "movement"
+export type UseMouseSourceType = "mouse" | "touch" | null
+export type UseMouseEventExtractor = (
+	event: MouseEvent | Touch
+) => [x: number, y: number] | null | undefined
+
 export interface MouseOptions extends ConfigurableEventFilter {
 	/**
-	 * Mouse position based by page, client, or relative to previous position
+	 * Mouse position based by page, client, screen or relative to previous position
 	 *
 	 * @defaultValue 'page'
 	 */
-	type?: "page" | "client" | "movement"
+	type?: UseMouseCoordType | UseMouseEventExtractor
 
 	/**
 	 * Listen to `touchmove` events
@@ -324,12 +354,12 @@ export interface MouseOptions extends ConfigurableEventFilter {
 	 *
 	 * @defaultValue false
 	 */
-	reset_on_touch_ends?: boolean
+	resetOnTouchEnds?: boolean
 
 	/**
-	 * Initial values
+	 * The fallback position when the browser doesn't support mouse events
 	 */
-	initial_value?: Position
+	fallback?: Position
 }
 
 export type MouseSourceType = "mouse" | "touch" | null
@@ -358,10 +388,10 @@ export type NavigatorWithWakeLock = Navigator & {
 
 export interface WindowSizeOptions {
 	/** Initial width */
-	initial_width?: number
+	initialWidth?: number
 
 	/** Initial height */
-	initial_height?: number
+	initialHeight?: number
 
 	/**
 	 * Listen to window `orientationchange` event
@@ -380,27 +410,55 @@ export interface WindowSizeOptions {
 export type WorkerFn = (...args: unknown[]) => Worker
 
 export interface WebWorkerReturn<T = any> {
+	/**
+	 * The message event
+	 */
 	data: Readable<T>
 
+	/**
+	 * The error event
+	 *
+	 */
 	error: Readable<T>
 
+	/**
+	 * Post a message to the worker
+	 */
 	post: (typeof Worker.prototype)["postMessage"]
 
+	/**
+	 * Cleanup the worker
+	 */
 	cleanup: () => void
 
+	/**
+	 * The worker instance
+	 */
 	wk: Readable<Worker | undefined>
 }
 
 export type WebSocketStatus = "OPEN" | "CONNECTING" | "CLOSED"
 
 export interface WebSocketOptions {
-	on_connected?: (ws: WebSocket) => void
+	/**
+	 * Hook when the websocket is connected
+	 */
+	onConnected?: (ws: WebSocket) => void
 
-	on_disconnected?: (ws: WebSocket, event: CloseEvent) => void
+	/**
+	 * Hook when the websocket is disconnected
+	 */
+	onDisconnected?: (ws: WebSocket, event: CloseEvent) => void
 
-	on_error?: (ws: WebSocket, event: Event) => void
+	/**
+	 * Hook when the websocket is closed
+	 */
+	onError?: (ws: WebSocket, event: Event) => void
 
-	on_message?: (ws: WebSocket, event: MessageEvent) => void
+	/**
+	 * Hook when the websocket received a message
+	 */
+	onMessage?: (ws: WebSocket, event: MessageEvent) => void
 
 	/**
 	 * Send heartbeat for every x seconds passed
@@ -429,7 +487,7 @@ export interface WebSocketOptions {
 				 *
 				 * @defaultValue 1
 				 */
-				pong_timeout?: number
+				pongTimeout?: number
 		  }
 
 	/**
@@ -437,7 +495,7 @@ export interface WebSocketOptions {
 	 *
 	 * @defaultValue false
 	 */
-	auto_reconnect?:
+	autoReconnect?:
 		| boolean
 		| {
 				/**
@@ -459,7 +517,7 @@ export interface WebSocketOptions {
 				/**
 				 * On maximum retry times reached.
 				 */
-				on_failed?: Fn
+				onFailed?: Fn
 		  }
 
 	/**
@@ -474,7 +532,7 @@ export interface WebSocketOptions {
 	 *
 	 * @defaultValue true
 	 */
-	auto_close?: boolean
+	autoClose?: boolean
 
 	/**
 	 * List of one or more sub-protocol strings
@@ -482,45 +540,6 @@ export interface WebSocketOptions {
 	 * @defaultValue []
 	 */
 	protocols?: string[]
-}
-
-export interface WebSocketReturn<T> {
-	/**
-	 * Reference to the latest data received via the websocket,
-	 * can be watched to respond to incoming messages
-	 */
-	data: Readable<T | null>
-
-	/**
-	 * The current websocket status, can be only one of:
-	 * 'OPEN', 'CONNECTING', 'CLOSED'
-	 */
-	status: Readable<WebSocketStatus>
-
-	/**
-	 * Closes the websocket connection gracefully.
-	 */
-	close: WebSocket["close"]
-
-	/**
-	 * Reopen the websocket connection.
-	 * If there the current one is active, will close it before opening a new one.
-	 */
-	open: Fn
-
-	/**
-	 * Sends data through the websocket connection.
-	 *
-	 * @param data - The data to send
-	 *
-	 * @param buffer - when the socket is not yet open, store the data into the buffer and sent them one connected. Default to true.
-	 */
-	send: (data: string | ArrayBuffer | Blob, buffer?: boolean) => boolean
-
-	/**
-	 * Reference to the WebSocket instance.
-	 */
-	ws: Readable<WebSocket | undefined>
 }
 
 export interface VibrateOptions {
@@ -565,14 +584,14 @@ export interface UrlQueryOptions<T> {
 	 *
 	 * @defaultValue true
 	 */
-	remove_nullish?: boolean
+	removeNullish?: boolean
 
 	/**
 	 * Remove `false` values from the query object
 	 *
 	 * @defaultValue false
 	 */
-	remove_falsy?: boolean
+	removeFalsy?: boolean
 
 	/** A fallback value to use when the query is empty */
 	fallback?: T
@@ -612,7 +631,7 @@ export interface StorageOptions<T> {
 	 * @param error - Error
 	 *
 	 */
-	on_error?: (error: unknown) => void
+	onError?: (error: unknown) => void
 
 	/**
 	 * Custom data serialization
@@ -645,8 +664,14 @@ export interface OnKeyStrokeOptions {
 	target?: EventTarget | null | undefined
 
 	passive?: boolean
-}
 
+	/**
+	 * Set to `true` to ignore repeated events when the key is being held down.
+	 *
+	 * @defaultValue false
+	 */
+	dedupe?: boolean
+}
 
 export interface ToDataURLOptions {
 	/**
@@ -662,4 +687,3 @@ export interface ToDataURLOptions {
 export interface Base64ObjectOptions<T> {
 	serializer: (v: T) => string
 }
-

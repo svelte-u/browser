@@ -1,6 +1,6 @@
-import { timeoutfn, to_readable, to_writable, unstore } from "@sveu/shared"
+import { timeoutFn, toReadable, toWritable, unstore } from "@sveu/shared"
 
-import { on } from "../event_listener"
+import { on } from "../eventListener"
 import { support } from "../support"
 import type { ClipboardOptions, ClipboardReturn } from "../utils"
 
@@ -10,8 +10,13 @@ import type { ClipboardOptions, ClipboardReturn } from "../utils"
  * @param options - The options for the clipboard.
  * - `read` - Enabled reading for clipboard. default: `false`
  * - `source` - Copy source.
- * - `copied_during` - Seconds to reset state of `copied` ref. default: `1.5`
+ * - `copiedDuring` - Seconds to reset state of `copied` ref. default: `1.5`
  * - `legacy` - Whether fallback to document.execCommand('copy') if clipboard is undefined. default: `false`
+ *
+ * @example
+ * ```ts
+ * const { supported, text, copied, copy } = clipboard()
+ * ```
  *
  * @returns
  * - `supported` - Returns whether the clipboard is supported.
@@ -28,24 +33,19 @@ export function clipboard(
 export function clipboard(
 	options: ClipboardOptions<string | undefined> = {}
 ): ClipboardReturn<boolean> {
-	const {
-		read = false,
-		source,
-		copied_during = 1.5,
-		legacy = false,
-	} = options
+	const { read = false, source, copiedDuring = 1.5, legacy = false } = options
 
 	const events = ["copy", "cut"]
 
 	const clipboard_supported = support("clipboard")
 
-	const supported = to_readable(clipboard_supported || legacy)
+	const supported = toReadable(clipboard_supported || legacy)
 
-	const text = to_writable("")
+	const text = toWritable("")
 
-	const copied = to_writable(false)
+	const copied = toWritable(false)
 
-	const timeout = timeoutfn(() => copied.set(false), copied_during, {
+	const timeout = timeoutFn(() => copied.set(false), copiedDuring, {
 		immediate: false,
 	})
 
@@ -65,6 +65,16 @@ export function clipboard(
 	/** Copy text to clipboard.
 	 *
 	 * @param value - The text to copy.
+	 *
+	 * @example
+	 * ```ts
+	 * copy("Hello World!")
+	 *
+	 * // or
+	 *
+	 * copy() // copy from source
+	 * ```
+	 *
 	 */
 	async function copy(value = source) {
 		if (unstore(supported) && value != null) {
@@ -76,7 +86,7 @@ export function clipboard(
 
 			copied.set(true)
 
-			timeout.start()
+			timeout.resume()
 		}
 	}
 
@@ -106,8 +116,8 @@ export function clipboard(
 
 	return {
 		supported,
-		text: to_readable(text),
-		copied: to_readable(copied),
+		text: toReadable(text),
+		copied: toReadable(copied),
 		copy,
 	}
 }

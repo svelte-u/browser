@@ -1,11 +1,11 @@
 import {
-	create_singleton_promise,
-	to_readable,
-	to_writable,
+	createSingletonPromise,
+	toReadable,
+	toWritable,
 	unstore,
 } from "@sveu/shared"
 
-import { on } from "../event_listener"
+import { on } from "../eventListener"
 import { support } from "../support"
 import type {
 	GeneralPermissionDescriptor,
@@ -14,22 +14,37 @@ import type {
 	PermissionReturnWithControls,
 } from "../utils"
 
+/**
+ * Reactive Permissions API.
+ *
+ * @param name - The name of the permission.
+ *
+ * @param options - Options.
+ * - `controls` - Whether to return controls or not.
+ *
+ * @example
+ * ```ts
+ * const state = permission("geolocation")
+ *
+ * const { state, query } = permission("geolocation", { controls: true })
+ * ```
+ *
+ * @returns A reactive permission state.
+ * - `state` - The current permission state.
+ * - `supported` - Whether the permission is supported or not.
+ * - `query` - A function that returns a promise that resolves to the permission status.
+ *
+ */
 export function permission(
-	permission_desc:
-		| GeneralPermissionDescriptor
-		| GeneralPermissionDescriptor["name"],
+	name: GeneralPermissionDescriptor["name"],
 	options?: PermissionOptions<false>
 ): PermissionReturn
 export function permission(
-	permission_desc:
-		| GeneralPermissionDescriptor
-		| GeneralPermissionDescriptor["name"],
+	name: GeneralPermissionDescriptor["name"],
 	options: PermissionOptions<true>
 ): PermissionReturnWithControls
 export function permission(
-	permission_desc:
-		| GeneralPermissionDescriptor
-		| GeneralPermissionDescriptor["name"],
+	name: GeneralPermissionDescriptor["name"],
 	options: PermissionOptions<boolean> = {}
 ): PermissionReturn | PermissionReturnWithControls {
 	const { controls = false } = options
@@ -38,15 +53,15 @@ export function permission(
 
 	let permission_status: PermissionStatus | undefined
 
-	const desc = { name: permission_desc } as PermissionDescriptor
+	const desc = { name } as PermissionDescriptor
 
-	const state = to_writable<PermissionState | undefined>(undefined)
+	const state = toWritable<PermissionState | undefined>(undefined)
 
 	const on_change = () => {
 		if (permission_status) state.set(permission_status.state)
 	}
 
-	const query = create_singleton_promise(async () => {
+	const query = createSingletonPromise(async () => {
 		if (!unstore(supported)) return
 
 		if (!permission_status) {
@@ -68,9 +83,9 @@ export function permission(
 
 	if (controls) {
 		return {
-			state: to_readable<PermissionState | undefined>(state),
+			state: toReadable<PermissionState | undefined>(state),
 			supported,
 			query,
 		}
-	} else return to_readable(state)
+	} else return toReadable(state)
 }
