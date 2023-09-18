@@ -1,6 +1,6 @@
 {
     "name": "@sveu/browser",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "packageManager": "pnpm@8.4.0",
     "description": "A collection of browser utilities for Svelte",
     "author": "Mohamed Nesredin<https://github.com/Mohamed-Kaizen>",
