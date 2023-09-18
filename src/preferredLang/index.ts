@@ -1,4 +1,4 @@
-import { toReadable, toWritable } from "@sveu/shared"
+import { browser, toReadable, toWritable } from "@sveu/shared"
 
 import { on } from "../eventListener"
 
@@ -13,7 +13,7 @@ import { on } from "../eventListener"
  * @returns Readable Store
  */
 export function preferredLang() {
-	if (!window) return toReadable(["en"])
+	if (!browser) return toReadable(["en"])
 
 	const navigator = window.navigator
 

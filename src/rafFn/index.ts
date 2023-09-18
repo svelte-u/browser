@@ -1,4 +1,10 @@
-import { on_destroy, toReadable, toWritable, unstore } from "@sveu/shared"
+import {
+	browser,
+	on_destroy,
+	toReadable,
+	toWritable,
+	unstore,
+} from "@sveu/shared"
 import type { Fn, Pauseable } from "@sveu/shared"
 
 import type { RafFnOptions } from "../utils"
@@ -31,14 +37,14 @@ export function rafFn(fn: Fn, options: RafFnOptions = {}): Pauseable {
 	let raf_id: null | number = null
 
 	function loop() {
-		if (!unstore(active) || !window) return
+		if (!unstore(active) || !browser) return
 
 		fn()
 		raf_id = window.requestAnimationFrame(loop)
 	}
 
 	function resume() {
-		if (!unstore(active) && window) {
+		if (!unstore(active) && browser) {
 			active.set(true)
 			loop()
 		}
